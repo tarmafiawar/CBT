@@ -1,4 +1,4 @@
-package poc.cbt.myrecyclerview;
+package poc.cbt.activity;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

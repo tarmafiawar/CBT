@@ -1,4 +1,4 @@
-package model;
+package poc.cbt.model;
 
 /**
  * Created by taro on 1/11/17.

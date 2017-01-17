@@ -1,4 +1,4 @@
-package poc.cbt.myrecyclerview;
+package poc.cbt.task;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,8 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Container;
-import model.Item;
+import poc.cbt.model.Container;
+import poc.cbt.model.Item;
 import utils.Constants;
 
 /**

@@ -1,4 +1,4 @@
-package poc.cbt.myrecyclerview;
+package poc.cbt.task;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

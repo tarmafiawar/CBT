@@ -1,4 +1,4 @@
-package poc.cbt.myrecyclerview;
+package poc.cbt.activity;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +15,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Container;
-import model.Item;
+import poc.cbt.model.Container;
+import poc.cbt.model.Item;
+import poc.cbt.task.ImageLoadTask;
 import utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
