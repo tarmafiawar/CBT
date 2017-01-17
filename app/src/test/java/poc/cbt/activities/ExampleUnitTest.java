@@ -1,4 +1,4 @@
-package poc.cbt.activity;
+package poc.cbt.activities;
 
 import org.junit.Test;
 

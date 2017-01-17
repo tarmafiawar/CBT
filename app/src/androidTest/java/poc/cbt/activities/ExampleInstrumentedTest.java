@@ -1,4 +1,4 @@
-package poc.cbt.activity;
+package poc.cbt.activities;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

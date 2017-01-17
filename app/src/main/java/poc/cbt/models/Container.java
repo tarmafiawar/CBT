@@ -1,4 +1,4 @@
-package poc.cbt.model;
+package poc.cbt.models;
 
 import java.util.List;
 

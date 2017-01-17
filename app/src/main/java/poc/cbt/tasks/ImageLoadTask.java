@@ -1,4 +1,4 @@
-package poc.cbt.task;
+package poc.cbt.tasks;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

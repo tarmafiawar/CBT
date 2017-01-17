@@ -1,4 +1,4 @@
-package poc.cbt.task;
+package poc.cbt.tasks;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,9 +20,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import poc.cbt.model.Container;
-import poc.cbt.model.Item;
-import utils.Constants;
+import poc.cbt.models.Container;
+import poc.cbt.models.Item;
+import poc.cbt.poc.cbt.constants.Constants;
 
 /**
  * Created by taro on 1/17/17.

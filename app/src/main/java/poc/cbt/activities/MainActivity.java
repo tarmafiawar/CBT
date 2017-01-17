@@ -1,4 +1,4 @@
-package poc.cbt.activity;
+package poc.cbt.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +17,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import poc.cbt.model.Container;
-import poc.cbt.model.Item;
-import poc.cbt.task.ImageLoadTask;
-import utils.Constants;
+import poc.cbt.models.Container;
+import poc.cbt.models.Item;
+import poc.cbt.tasks.ImageLoadTask;
+import poc.cbt.poc.cbt.constants.Constants;
 
 public class MainActivity extends AppCompatActivity {
 

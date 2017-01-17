@@ -1,4 +1,4 @@
-package poc.cbt.activity;
+package poc.cbt.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
