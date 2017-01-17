@@ -15,6 +15,7 @@ public class BlankActivity extends AppCompatActivity {
         setContentView(R.layout.blank_activity);
 
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
+        txtJson.setText(getIntent().getExtras().getString("NAME_EN"));
 
     }
 }

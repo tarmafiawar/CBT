@@ -16,9 +16,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="poc.cbt.activity.BlankActivity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name="poc.cbt.activity.BlankActivity">
+        </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

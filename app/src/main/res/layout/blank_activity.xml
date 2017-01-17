@@ -9,6 +9,10 @@
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tvJsonItem" />
+        android:layout_height="wrap_content"
+        android:id="@+id/tvJsonItem"
+        android:textStyle="normal|bold|italic"
+        android:textSize="36sp"
+        android:padding="10dp"
+        android:layout_margin="5dp" />
 </LinearLayout>
