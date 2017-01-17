@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private List<Container> containerList;
 
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +50,6 @@ public class MainActivity extends AppCompatActivity {
         ListViewContainerAdapter listViewAdapter = new ListViewContainerAdapter(this, containerList);
 
         listView.setAdapter(listViewAdapter);
-
-        /*
-        setContentView(R.layout.recycler_view);
-        mRecyclerView = (RecyclerView) findViewById(R.id.rccv);
-
-//        mLayoutManager = new LinearLayoutManager(this);
-
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setLayoutManager(
-                new GridLayoutManager(mRecyclerView.getContext(), 2, GridLayoutManager.HORIZONTAL, false));
-
-        List<String> stringList = new ArrayList<String>();
-        for(int i=0; i< 20; i++){
-            stringList.add("App"+(i+1));
-        }
-
-        mAdapter = new RecyclerViewItemAdapter(stringList);
-        mRecyclerView.setAdapter(mAdapter);
-        */
     }
 
     private List<Container> genMockData(){
@@ -111,13 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 else
                     it.setImageUrl("https://www.mx7.com/i/d8e/KIfqnH.jpg");
 
-//            if(container.getType() == Constants.GridType.BANNER)
-//                new ImageLoadTask("https://www.mx7.com/i/d8e/KIfqnH.jpg", viewHolder.ib).execute();
-//            else
-//                new ImageLoadTask("https://s3-ap-southeast-1.amazonaws.com/mobile-resource.tewm/wallet-app/consumer/home/images/ic-topup.png", viewHolder.ib).execute();
-
-
-
                     itemList.add(it);
             }
 
@@ -137,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
         private List<Container> containerList;
 
-        private String[] iconNames = {"icon1", "icon2"};
-        private int[] images = {android.R.drawable.ic_menu_save, android.R.drawable.ic_menu_save};
 
         ListViewContainerAdapter(Context context, List<Container> containerList){
             this.context = context;
@@ -169,16 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
             View rowView = inflater.inflate(R.layout.recycler_view, null);
 
-//            rowView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(context, "You Clicked " + containerList.get(position).getTitleEn(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            holder.imb = (ImageButton) rowView.findViewById(R.id.imageButton);
-//            holder.tv = (TextView) rowView.findViewById(R.id.textView);
-//            holder.horizontalLinearLayout = (LinearLayout) rowView.findViewById(R.id.horizontalLinearLayout);
-
             holder.tv = (TextView) rowView.findViewById(R.id.containerTextView);
             holder.rView = (RecyclerView) rowView.findViewById(R.id.rccv);
 
@@ -204,25 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
             holder.rView.setLayoutManager(layoutManager);
 
-//            List<String> stringList = new ArrayList<String>();
-//            for(int i=0; i< 20; i++){
-//                stringList.add("App"+(i+1));
-//            }
-
             mAdapter = new RecyclerViewItemAdapter(container, itemList);
             holder.rView.setAdapter(mAdapter);
-
-//            holder.horizontalLinearLayout.setAd
-
-//            holder.tv.setText(iconNames[position]);
-//            holder.imb.setImageResource(images[position]);
-//
-//            rowView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(context, "You Clicked " + iconNames[position], Toast.LENGTH_LONG).show();
-//                }
-//            });
 
             return rowView;
         }
@@ -230,51 +173,8 @@ public class MainActivity extends AppCompatActivity {
 
     class Holder{
         TextView tv;
-//        ImageButton imb;
-//        LinearLayout horizontalLinearLayout;
         RecyclerView rView;
     }
-
-//    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
-//
-//        private List<String> stringList;
-//
-//        MyAdapter(List<String> stringList){
-//            this.stringList = stringList;
-//        }
-//
-//        @Override
-//        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            // create a new view
-//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view, parent, false);
-//            TextView textView = (TextView) view.findViewById(R.id.textView);
-////            textView.setText("xxx");
-//            // set the view's size, margins, paddings and layout parameters\
-//            ViewHolder vh = new ViewHolder(textView);
-////            vh.mTextView = textView;
-//            return vh;
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(ViewHolder holder, int position) {
-//            holder.mTextView.setText(stringList.get(position));
-//        }
-//
-//
-//        @Override
-//        public int getItemCount() {
-//            return stringList.size();
-//        }
-//
-//        public class ViewHolder extends RecyclerView.ViewHolder {
-//            public TextView mTextView;
-//
-//            public ViewHolder(TextView v){
-//                super(v);
-//                mTextView = v;
-//            }
-//        }
-//    }
 
     public class RecyclerViewItemAdapter extends
             RecyclerView.Adapter
@@ -303,32 +203,7 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
             viewHolder.label.setText(itemList.get(position).getNameEn());
-//            viewHolder.ib.setImageResource(android.R.drawable.ic_menu_save);
-//                URL newurl = new URL("https://www.mx7.com/i/d8e/KIfqnH.jpg");
-//                Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-
-//                Bitmap mIcon_val = viewHolder.ib.setImageBitmap(mIcon_val);
-//            viewHolder.ib.setImageBitmap();
-
             new ImageLoadTask(itemList.get(position).getImageUrl(), viewHolder.ib).execute();
-//            if(container.getType() == Constants.GridType.BANNER)
-//                new ImageLoadTask("https://www.mx7.com/i/d8e/KIfqnH.jpg", viewHolder.ib).execute();
-//            else
-//                new ImageLoadTask("https://s3-ap-southeast-1.amazonaws.com/mobile-resource.tewm/wallet-app/consumer/home/images/ic-topup.png", viewHolder.ib).execute();
-
-//            Bitmap mIcon_val = getBitmapFromURL("https://www.mx7.com/i/d8e/KIfqnH.jpg");
-//            viewHolder.ib.setImageBitmap(mIcon_val);
-
-//            viewHolder.ib.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(MainActivity.this, BlankActivity.class);
-//                    startActivity(intent);
-
-//                    Toast.makeText(getApplicationContext(), "You Clicked " + itemList.get(position).getNameEn() + ", " + container.getTitleEn(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-
         }
 
         @Override
@@ -349,59 +224,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
-    }
-
-    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-
-        private String url;
-        private ImageButton imageButton;
-
-        public ImageLoadTask(String url, ImageButton imageButton) {
-            this.url = url;
-            this.imageButton = imageButton;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            try {
-                URL urlConnection = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) urlConnection
-                        .openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                return myBitmap;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            imageButton.setImageBitmap(result);
-        }
-
-    }
-
 
 }
