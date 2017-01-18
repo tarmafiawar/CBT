@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/ic_launcher"
         android:id="@+id/imageButton"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:scaleType="fitXY" />
 
     <TextView
         android:text="TextView"

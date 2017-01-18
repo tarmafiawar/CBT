@@ -12,10 +12,12 @@ public class Container {
     Enum type;
     String titleEn;
     String titleTh;
-    String itemWidth;
-    String itemHeight;
+    int itemWidth;
+    int itemHeight;
 
     List<Item> itemList;
+
+    int numberOfItemsPerRow;
 
 
     public String getId() {
@@ -50,19 +52,19 @@ public class Container {
         this.titleTh = titleTh;
     }
 
-    public String getItemWidth() {
+    public int getItemWidth() {
         return itemWidth;
     }
 
-    public void setItemWidth(String itemWidth) {
+    public void setItemWidth(int itemWidth) {
         this.itemWidth = itemWidth;
     }
 
-    public String getItemHeight() {
+    public int getItemHeight() {
         return itemHeight;
     }
 
-    public void setItemHeight(String itemHeight) {
+    public void setItemHeight(int itemHeight) {
         this.itemHeight = itemHeight;
     }
 
@@ -72,5 +74,13 @@ public class Container {
 
     public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
+    }
+
+    public int getNumberOfItemsPerRow() {
+        return numberOfItemsPerRow;
+    }
+
+    public void setNumberOfItemsPerRow(int numberOfItemsPerRow) {
+        this.numberOfItemsPerRow = numberOfItemsPerRow;
     }
 }

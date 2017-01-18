@@ -11,6 +11,10 @@ public class Item {
     String nameTh;
     String imageUrl;
     String deepLink;
+
+    int numberOfItemsPerRow;
+    int itemSize;
+
     int resourceId;
 
 
@@ -54,6 +58,5 @@ public class Item {
     public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
-
 
 }
