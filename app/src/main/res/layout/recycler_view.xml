@@ -4,10 +4,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="poc.cbt.activities.MainActivity">
 
     <LinearLayout
@@ -24,7 +20,7 @@
             android:id="@+id/containerTextView"
             tools:style="@android:style/Widget.DeviceDefault.TextView.ListSeparator"
             tools:fontFamily="sans-serif-condensed"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold|italic" />
 
         <android.support.v7.widget.RecyclerView
@@ -32,8 +28,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:id="@+id/rccv"
-            android:layout_marginTop="10dp" />
+            android:id="@+id/rccv" />
 
     </LinearLayout>
 

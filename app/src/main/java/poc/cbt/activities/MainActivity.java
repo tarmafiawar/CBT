@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,128 +41,63 @@ import poc.cbt.poc.cbt.constants.Constants;
 public class MainActivity extends AppCompatActivity {
 
 
-    private ListView listView;
-    private List<Container> containerList;
-
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView containerRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView) findViewById(R.id.listView);
+        containerRecyclerView = (RecyclerView) findViewById(R.id.containerRecyclerView);
 
         new JsonTask().execute("https://s3-ap-southeast-1.amazonaws.com/mobile-resource.tewm-alpha/wallet-app/consumer/home/config/home_container_template.json");
 
     }
 
     public void setAdapterToList(List<Container> containerList){
-        ListViewContainerAdapter listViewAdapter = new ListViewContainerAdapter(this, containerList);
-        listView.setAdapter(listViewAdapter);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
+
+        RecyclerViewContainerAdapter containerAdapter = new RecyclerViewContainerAdapter(this, containerList);
+
+        containerRecyclerView.setLayoutManager(layoutManager);
+        containerRecyclerView.setAdapter(containerAdapter);
     }
 
-    private List<Container> genMockData(){
-
-        List<Container> containerList = new ArrayList<Container>();
-
-        for(int c=0; c < 10; c++){
-
-            Container container = new Container();
-            container.setTitleEn("Container : " + (c + 1));
-
-            int itemSize = 0;
-            if(c%3 == 1) {
-                container.setType(Constants.GridType.FIX);
-                itemSize = 6;
-                container.setTitleEn("Fix Container" );
-            }
-            else if(c%3 == 2){
-                container.setType(Constants.GridType.SWIPE);
-                itemSize = 8;
-                container.setTitleEn("Swipe Container" );
-            }else if(c%3 == 0){
-                container.setType(Constants.GridType.BANNER);
-                itemSize = 8;
-                container.setTitleEn("Banner Container" );
-            }
-
-            List<Item> itemList = new ArrayList<Item>();
-
-            for(int i=0; i< itemSize; i++){
-                Item it = new Item();
-                it.setNameEn("Icon" + i);
-                it.setNameTh("NameTh" + i);
-                it.setDeepLink("Deeplink" + i);
-                it.setResourceId(android.R.drawable.ic_menu_save);
-
-                if(container.getType() == Constants.GridType.SWIPE || container.getType() == Constants.GridType.FIX)
-                    it.setImageUrl("https://s3-ap-southeast-1.amazonaws.com/mobile-resource.tewm/wallet-app/consumer/home/images/ic-topup.png");
-                else
-                    it.setImageUrl("https://www.mx7.com/i/d8e/KIfqnH.jpg");
-
-                itemList.add(it);
-            }
-
-            container.setItemList(itemList);
-
-            containerList.add(container);
-        }
-
-        return containerList;
-    }
-
-
-    class ListViewContainerAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-        private Context context;
+    class RecyclerViewContainerAdapter extends RecyclerView.Adapter <RecyclerViewContainerAdapter.ListContainerViewHolder> {
 
         private List<Container> containerList;
+        private Context context;
 
+        RecyclerViewContainerAdapter(Context context, List<Container> containerList) {
+            if (containerList == null) {
+                throw new IllegalArgumentException("itemList must not be null");
+            }
 
-        ListViewContainerAdapter(Context context, List<Container> containerList){
             this.context = context;
             this.containerList = containerList;
-
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         }
 
         @Override
-        public int getCount() {
-            return containerList.size();
+        public ListContainerViewHolder onCreateViewHolder( ViewGroup viewGroup, int viewType) {
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_view, null, false);
+            return new ListContainerViewHolder(itemView);
         }
 
         @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View view, ViewGroup viewGroup) {
-            Holder holder = new Holder();
-
-            View rowView = inflater.inflate(R.layout.recycler_view, null);
-
-            holder.tv = (TextView) rowView.findViewById(R.id.containerTextView);
-            holder.rView = (RecyclerView) rowView.findViewById(R.id.rccv);
+        public void onBindViewHolder(ListContainerViewHolder viewHolder, final int position) {
 
             Container container = containerList.get(position);
             List<Item> itemList = container.getItemList();
+            viewHolder.containerTextView.setText(containerList.get(position).getTitleEn());
 
-            holder.tv.setText(container.getTitleEn());
+            RecyclerView.Adapter adapter = new RecyclerViewItemAdapter(context, container, itemList);
+            viewHolder.rccv.setAdapter(adapter);
 
             RecyclerView.LayoutManager layoutManager = null;
 
             if(container.getType() == Constants.GridType.FIX){
                 int spanCount = itemList.size() / container.getNumberOfItemsPerRow();
-                layoutManager = new GridLayoutManager(holder.rView.getContext(), spanCount, GridLayoutManager.HORIZONTAL, false){
+                layoutManager = new GridLayoutManager(context, spanCount, GridLayoutManager.HORIZONTAL, false){
                     @Override
                     public boolean canScrollHorizontally() {
                         return false;
@@ -171,24 +105,36 @@ public class MainActivity extends AppCompatActivity {
                 };
 
             }else{//container.getType() == Constants.GridType.SWIPE
-                layoutManager = new GridLayoutManager(holder.rView.getContext(), 1, GridLayoutManager.HORIZONTAL, false);
+                layoutManager = new GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false);
             }
 
-            holder.rView.setLayoutManager(layoutManager);
+            viewHolder.rccv.setLayoutManager(layoutManager);
 
-            mAdapter = new RecyclerViewItemAdapter(context, container, itemList);
-            holder.rView.setAdapter(mAdapter);
+            RecyclerView.Adapter mAdapter = new RecyclerViewItemAdapter(context, container, itemList);
+            viewHolder.rccv.setAdapter(mAdapter);
 
-            return rowView;
+        }
+
+        @Override
+        public int getItemCount() {
+            return containerList.size();
+        }
+
+        public final class ListContainerViewHolder extends RecyclerView.ViewHolder {
+            TextView containerTextView;
+            RecyclerView rccv;
+
+
+            public ListContainerViewHolder(View itemView) {
+                super(itemView);
+                containerTextView = (TextView) itemView.findViewById(R.id.containerTextView);
+                rccv = (RecyclerView) itemView.findViewById(R.id.rccv);
+
+            }
         }
     }
 
-    class Holder{
-        TextView tv;
-        RecyclerView rView;
-    }
-
-    public class RecyclerViewItemAdapter extends
+     class RecyclerViewItemAdapter extends
             RecyclerView.Adapter
                     <RecyclerViewItemAdapter.ListItemViewHolder> {
 
@@ -216,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
             viewHolder.label.setText(itemList.get(position).getNameTh());
-            new ImageLoadTask(itemList.get(position).getImageUrl(), viewHolder.ib).execute();
+//            new ImageLoadTask(itemList.get(position).getImageUrl(), viewHolder.ib).execute();
+            Picasso.with(getApplicationContext()).load(itemList.get(position).getImageUrl()).into(viewHolder.ib);
 
 //            viewHolder.ib.getLayoutParams().height = container.getItemHeight();
 //            viewHolder.ib.getLayoutParams().width = container.getItemWidth();
