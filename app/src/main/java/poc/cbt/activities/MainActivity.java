@@ -12,9 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -35,8 +34,8 @@ import java.util.List;
 
 import poc.cbt.models.Container;
 import poc.cbt.models.Item;
-import poc.cbt.tasks.ImageLoadTask;
 import poc.cbt.poc.cbt.constants.Constants;
+import poc.cbt.utils.SimpleDividerItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewContainerAdapter containerAdapter = new RecyclerViewContainerAdapter(this, containerList);
 
         containerRecyclerView.setLayoutManager(layoutManager);
+        containerRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         containerRecyclerView.setAdapter(containerAdapter);
     }
 
@@ -162,13 +162,12 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
             viewHolder.label.setText(itemList.get(position).getNameTh());
-//            new ImageLoadTask(itemList.get(position).getImageUrl(), viewHolder.ib).execute();
-            Picasso.with(getApplicationContext()).load(itemList.get(position).getImageUrl()).into(viewHolder.ib);
+            Picasso.with(getApplicationContext()).load(itemList.get(position).getImageUrl()).into(viewHolder.iv);
 
-//            viewHolder.ib.getLayoutParams().height = container.getItemHeight();
-//            viewHolder.ib.getLayoutParams().width = container.getItemWidth();
+//            viewHolder.iv.getLayoutParams().height = container.getItemHeight();
+//            viewHolder.iv.getLayoutParams().width = container.getItemWidth();
 
-            viewHolder.ib.setOnClickListener(new View.OnClickListener() {
+            viewHolder.iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, BlankActivity.class);
@@ -190,13 +189,13 @@ public class MainActivity extends AppCompatActivity {
 
         public final class ListItemViewHolder extends RecyclerView.ViewHolder {
             TextView label;
-            ImageButton ib;
+            ImageView iv;
 
 
             public ListItemViewHolder(View itemView) {
                 super(itemView);
                 label = (TextView) itemView.findViewById(R.id.textView);
-                ib = (ImageButton) itemView.findViewById(R.id.imageButton);
+                iv = (ImageView) itemView.findViewById(R.id.imageView);
 
             }
         }
