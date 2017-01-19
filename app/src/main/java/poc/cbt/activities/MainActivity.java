@@ -3,17 +3,22 @@ package poc.cbt.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -36,6 +41,7 @@ import poc.cbt.models.Container;
 import poc.cbt.models.Item;
 import poc.cbt.poc.cbt.constants.Constants;
 import poc.cbt.utils.SimpleDividerItemDecoration;
+import poc.cbt.utils.WindowUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.LayoutManager layoutManager = null;
 
             if(container.getType() == Constants.GridType.FIX){
-                int spanCount = itemList.size() / container.getNumberOfItemsPerRow();
+                int spanCount = container.getNumberOfItemsPerRow();
+                if(itemList.size() % container.getNumberOfItemsPerRow() == 0)
+                    spanCount = itemList.size() / container.getNumberOfItemsPerRow();
                 layoutManager = new GridLayoutManager(context, spanCount, GridLayoutManager.HORIZONTAL, false){
                     @Override
                     public boolean canScrollHorizontally() {
@@ -161,11 +169,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
+            int screenWidthPixel = WindowUtil.getDeviceScreenWidthPixel(context);
+            int screenHeightPixel = WindowUtil.getDeviceScreenHeightPixel(context);
+            Log.d("screenWidthPixel", "screenWidthPixel:" + screenWidthPixel);
+
             viewHolder.label.setText(itemList.get(position).getNameTh());
+
             Picasso.with(getApplicationContext()).load(itemList.get(position).getImageUrl()).into(viewHolder.iv);
 
-//            viewHolder.iv.getLayoutParams().height = container.getItemHeight();
-//            viewHolder.iv.getLayoutParams().width = container.getItemWidth();
+            if(container.getType() == Constants.GridType.FIX){
+                if(container.getItemList().size()%container.getNumberOfItemsPerRow()==0 && container.getItemWidth() > 0 && container.getNumberOfItemsPerRow() > 0){
+                    int calWidth = container.getItemWidth()/container.getNumberOfItemsPerRow();
+                    ViewGroup.LayoutParams params = viewHolder.iv.getLayoutParams();
+                    params.width = screenWidthPixel * (calWidth+3) / 100;
+//                  params.height = screenHeightPixel;
+                    viewHolder.iv.setLayoutParams(params);
+                }else{
+                    int calWidth = (100/container.getNumberOfItemsPerRow())-10;
+                    ViewGroup.LayoutParams params = viewHolder.iv.getLayoutParams();
+                    params.width = screenWidthPixel * (calWidth+3) / 100;
+//                  params.height = screenHeightPixel;
+                    viewHolder.iv.setLayoutParams(params);
+                }
+            }
+
 
             viewHolder.iv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,12 +217,14 @@ public class MainActivity extends AppCompatActivity {
         public final class ListItemViewHolder extends RecyclerView.ViewHolder {
             TextView label;
             ImageView iv;
+            LinearLayout layout;
 
 
             public ListItemViewHolder(View itemView) {
                 super(itemView);
                 label = (TextView) itemView.findViewById(R.id.textView);
                 iv = (ImageView) itemView.findViewById(R.id.imageView);
+                layout = (LinearLayout) itemView.findViewById(R.id.layout);
 
             }
         }
@@ -266,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 //                pd.dismiss();
 //            }
 
-            Log.d("PRINT+++", "----- onPostExecute ");
+//            Log.d("PRINT+++", "----- onPostExecute ");
 
             try {
                 List<Container> containerList = new ArrayList<Container>();
@@ -274,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray containers = resultJSONObject.optJSONArray("containers");
 
                 for (int i = 0; i < containers.length(); i++) {
-                    Log.d("PRINT+++", "----- i " + i);
+//                    Log.d("PRINT+++", "----- i " + i);
                     JSONObject containerJson = containers.optJSONObject(i);
 
                     String type = containerJson.optString("type");
@@ -300,12 +329,12 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONArray items = containerJson.optJSONArray("items");
 
-                    Log.d("PRINT+++", " items.length() : " + items.length());
+//                    Log.d("PRINT+++", " items.length() : " + items.length());
 
                     List<Item> itemList = new ArrayList<Item>();
                     for (int j = 0; j < items.length(); j++) {
 
-                        Log.d("PRINT+++", "before----- j " + j);
+//                        Log.d("PRINT+++", "before----- j " + j);
 
                         if(items.optJSONObject(j) != null){
                             JSONObject itemJson = items.optJSONObject(j);
@@ -321,13 +350,13 @@ public class MainActivity extends AppCompatActivity {
 
                             itemList.add(item);
 
-                            Log.d("PRINT+++", "after----- j " + j);
+//                            Log.d("PRINT+++", "after----- j " + j);
                         }
 
                     }
                     container.setItemList(itemList);
                     containerList.add(container);
-                    Log.d("PRINT+++", "after----- i " + i);
+//                    Log.d("PRINT+++", "after----- i " + i);
                 }
 
                 setAdapterToList(containerList);
