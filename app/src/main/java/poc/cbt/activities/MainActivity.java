@@ -3,22 +3,18 @@ package poc.cbt.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -181,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 if(container.getItemList().size()%container.getNumberOfItemsPerRow()==0 && container.getItemWidth() > 0 && container.getNumberOfItemsPerRow() > 0){
                     int calWidth = container.getItemWidth()/container.getNumberOfItemsPerRow();
                     ViewGroup.LayoutParams params = viewHolder.iv.getLayoutParams();
-                    params.width = screenWidthPixel * (calWidth+3) / 100;
+                    params.width = (screenWidthPixel * (calWidth+3) / 100)-10;
 //                  params.height = screenHeightPixel;
                     viewHolder.iv.setLayoutParams(params);
                 }else{
